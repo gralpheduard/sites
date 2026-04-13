@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlockLeaders Academy | Build Character</title>
+    <title>BlockLeaders Academy | Mentorship</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,9 +11,9 @@
             --mc-panel: #c6c6c6;
             --mc-dirt: #4e342e;
             --mc-grass: #5aa351;
-            --mc-blue: #4782ff;
         }
 
+        /* Essential for "Pantay" alignment */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -35,9 +35,10 @@
             text-shadow: 3px 3px 0px #000;
             text-transform: uppercase;
             text-align: center;
+            width: 100%;
         }
 
-        /* --- RESPONSIVE HERO SECTION --- */
+        /* --- HERO --- */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -46,7 +47,7 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
                         url('https://wallpaperaccess.com/full/111300.jpg');
             background-size: cover;
             background-position: center;
@@ -54,40 +55,10 @@
             border-bottom: 10px solid var(--mc-grass);
         }
 
-        .hero h1 { 
-            font-size: clamp(1.5rem, 6vw, 2.8rem); 
-            margin-bottom: 20px; 
-        }
+        .hero h1 { font-size: clamp(1.5rem, 8vw, 2.5rem); margin-bottom: 20px; }
+        .hero p { font-size: clamp(1.2rem, 5vw, 1.8rem); max-width: 700px; margin-bottom: 30px; }
 
-        .hero p { 
-            font-size: clamp(1.2rem, 4vw, 2rem); 
-            max-width: 800px; 
-            margin-bottom: 30px;
-        }
-
-        .status-bar {
-            background: rgba(0,0,0,0.8);
-            padding: 8px 15px;
-            border: 2px solid var(--mc-green);
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            font-family: 'Press Start 2P';
-            font-size: 10px;
-        }
-
-        .dot {
-            height: 10px;
-            width: 10px;
-            background-color: #55ff55;
-            border-radius: 50%;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-        /* --- MINECRAFT BUTTON --- */
+        /* --- BUTTONS --- */
         .btn {
             display: inline-block;
             background: #8b8b8b;
@@ -96,21 +67,18 @@
             border-left-color: #fff;
             border-right-color: #404040;
             border-bottom-color: #404040;
-            padding: 15px 30px;
+            padding: 15px 25px;
             color: #fff;
             text-decoration: none;
             font-family: 'Press Start 2P', cursive;
             font-size: 14px;
             text-shadow: 2px 2px 0px #000;
-            transition: transform 0.1s;
-            width: 100%;
-            max-width: 300px;
+            transition: 0.1s;
+            text-align: center;
         }
-
         .btn:hover { background: var(--mc-green); }
-        .btn:active { transform: translateY(4px); border-top-color: #404040; border-left-color: #404040; border-right-color: #fff; border-bottom-color: #fff; }
 
-        /* --- SECTIONS --- */
+        /* --- PANELS (The Containers) --- */
         .section {
             padding: 60px 15px;
             background: #333 url('https://www.transparenttextures.com/patterns/dark-matter.png');
@@ -126,80 +94,65 @@
             border-left-color: #fff;
             border-right-color: #555;
             border-bottom-color: #555;
-            padding: 30px 20px;
-            max-width: 1000px;
+            padding: 30px 15px; /* Reduced side padding for mobile */
             width: 100%;
+            max-width: 600px; /* Centered narrow look like your screenshot */
             color: #333;
             box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
             margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers children inside panel */
         }
 
-        .panel h2 { 
-            font-size: clamp(1rem, 4vw, 1.4rem); 
-            text-shadow: none; 
-            margin-bottom: 30px; 
-            color: #000;
-        }
+        .panel h2 { font-size: 1.2rem; text-shadow: none; color: #000; margin-bottom: 30px; line-height: 1.4; }
 
-        /* --- VALUES GRID (Mobile First) --- */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Stack on mobile */
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
+        /* --- CURRICULUM CARDS (Fixing the overlap) --- */
         .card {
             background: #d1d1d1;
             border: 4px solid #333;
             padding: 20px;
             text-align: center;
+            width: 100%;
+            margin-bottom: 20px;
         }
-
+        .card:last-child { margin-bottom: 0; }
         .card h3 { font-size: 14px; text-shadow: none; color: #111; margin: 15px 0; }
+        .card p { font-size: 1.3rem; line-height: 1.2; }
 
-        /* --- INVENTORY LIST --- */
+        /* --- INVENTORY SLOTS (Fixing the Skew) --- */
         .inventory-slot {
             background: #8b8b8b;
             border: 4px solid #373737;
             padding: 20px;
-            margin: 15px 0;
+            margin-bottom: 15px;
+            width: 100%;
             display: flex;
-            flex-direction: column; /* Stack on mobile */
-            align-items: center;
+            flex-direction: column;
+            align-items: center; /* Pantay center */
             text-align: center;
-            gap: 15px;
             color: #fff;
         }
 
-        @media (min-width: 600px) {
-            .inventory-slot { flex-direction: row; text-align: left; justify-content: space-between; }
-        }
+        .inventory-slot h3 { font-size: 14px; margin-bottom: 10px; }
+        .inventory-slot p { font-size: 1rem; color: #ddd; margin-bottom: 10px; }
+        .price-tag { font-family: 'Press Start 2P'; font-size: 1.2rem; color: #55ff55; }
 
         .enchanted {
             border-color: #a333ff;
             background: #4a3a5a;
-            animation: glow 2s infinite alternate;
+            box-shadow: inset 0 0 15px #a333ff;
         }
 
-        @keyframes glow {
-            from { box-shadow: inset 0 0 10px #a333ff; }
-            to { box-shadow: inset 0 0 25px #a333ff; }
+        /* --- FORM FIXES --- */
+        form { width: 100%; }
+        label { 
+            font-family: 'Press Start 2P'; 
+            font-size: 10px; 
+            display: block; 
+            margin-bottom: 8px; 
+            color: #333; 
         }
-
-        /* --- FORM --- */
-        .footer-zone {
-            background: var(--mc-dirt) url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-            border-top: 10px solid var(--mc-grass);
-            padding: 60px 15px;
-            text-align: center;
-        }
-
-        form { text-align: left; max-width: 500px; margin: 0 auto; }
-
         input, select {
             background: #000;
             border: 4px solid #555;
@@ -211,137 +164,113 @@
             margin-bottom: 20px;
         }
 
-        label {
-            font-family: 'Press Start 2P';
-            font-size: 10px;
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
+        .icon-pixel { width: 48px; height: 48px; margin-bottom: 10px; }
+
+        /* --- FOOTER --- */
+        .footer-zone {
+            background: var(--mc-dirt) url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+            border-top: 10px solid var(--mc-grass);
+            padding: 60px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .icon-pixel { width: 48px; height: 48px; image-rendering: pixelated; }
-
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+        @media (min-width: 768px) {
+            .panel { max-width: 900px; padding: 40px; }
+            .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+            .card { margin-bottom: 0; }
+            .inventory-slot { flex-direction: row; text-align: left; justify-content: space-between; }
+            .inventory-slot h3, .inventory-slot p { text-align: left; margin-bottom: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Hero -->
     <section class="hero">
-        <div class="status-bar">
-            <span class="dot"></span> SERVER ONLINE
-        </div>
-        
-        <div class="floating">
-            <svg class="icon-pixel" viewBox="0 0 8 8" fill="#ff0000">
-                <path d="M1 1h2v1h1v1h1v-1h2v-1h1v3h-1v1h-1v1h-1v1h-1v-1h-1v-1h-1v-1h-1v-3z" />
-            </svg>
-        </div>
-
         <h1>Building Legends</h1>
-        <p>A value-based Minecraft mentorship for kids. We teach leadership, integrity, and teamwork in a private, moderated world.</p>
-        <a href="#enroll" class="btn">Apply Now</a>
+        <p>A Minecraft mentorship for kids. Teaching leadership, integrity, and teamwork.</p>
+        <a href="#enroll" class="btn">Get Started</a>
     </section>
 
-    <!-- Why Us -->
     <section class="section">
+        <!-- THE CURRICULUM -->
         <div class="panel">
             <h2>The Curriculum</h2>
             <div class="grid">
                 <div class="card">
-                    <svg class="icon-pixel" viewBox="0 0 8 8" fill="#55ffff">
-                        <path d="M3 0h2v1h1v1h1v1h1v2h-1v1h-1v1h-1v1h-2v-1h-1v-1h-1v-1h-1v-2h1v-1h1v-1h1z" />
-                    </svg>
-                    <h3>Integrity</h3>
-                    <p>Honesty in every trade. Learning that your word is your bond, even in a digital world.</p>
+                    <div style="background:#55ffff; width:30px; height:30px; margin: 0 auto; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
+                    <h3>Digital Integrity</h3>
+                    <p>Honesty in every trade. Respecting boundaries. Winning the right way.</p>
                 </div>
                 <div class="card">
-                    <svg class="icon-pixel" viewBox="0 0 8 8" fill="#ffaa00">
-                        <path d="M2 1h4v1h1v3h-1v1h-4v-1h-1v-3h1z M3 3h2v1h-2z" />
-                    </svg>
+                    <div style="background:#ffaa00; width:30px; height:30px; margin: 0 auto; border-radius: 5px;"></div>
                     <h3>Leadership</h3>
-                    <p>Leading squads of 5 through complex missions and managing shared resources.</p>
+                    <p>Leading a 5-man team through survival and managing resources.</p>
                 </div>
                 <div class="card">
-                    <svg class="icon-pixel" viewBox="0 0 8 8" fill="#aaaaaa">
-                        <path d="M0 2h1v1h1v1h1v1h1v1h1v1h1v1h1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1v-1h-1z" />
-                    </svg>
+                    <div style="background:#aaaaaa; width:30px; height:30px; margin: 0 auto; clip-path: polygon(0 20%, 100% 20%, 100% 80%, 0 80%);"></div>
                     <h3>Teamwork</h3>
-                    <p>Building together. Coordinating large engineering projects with communication.</p>
+                    <p>Building together. Shared goals and engineering projects.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Pricing Panel -->
-        <h2 style="margin: 40px 0 20px;">Choose Your Pack</h2>
-        <div class="panel" style="background: transparent; border: none; box-shadow: none; padding: 0;">
+        <!-- PRICING -->
+        <h2 style="margin: 20px 0;">Select Your Pack</h2>
+        <div class="panel" style="background:transparent; border:none; box-shadow:none; padding:0;">
             
             <div class="inventory-slot">
-                <div style="display: flex; align-items: center; gap: 15px; text-align: left;">
-                    <span style="font-size: 30px;">🪵</span>
-                    <div>
-                        <div style="font-family: 'Press Start 2P'; font-size: 12px;">Recruit Path</div>
-                        <div style="font-size: 1.1rem; color: #ddd;">5 Sessions + Squad Badge</div>
-                    </div>
+                <div style="font-size: 30px;">🪵</div>
+                <div>
+                    <h3>The Recruit Pack</h3>
+                    <p>5 Sessions + Squad Badge</p>
                 </div>
-                <div style="font-family: 'Press Start 2P'; font-size: 16px; color: #55ff55;">$99</div>
+                <div class="price-tag">₱4,000</div>
             </div>
 
             <div class="inventory-slot enchanted">
-                <div style="display: flex; align-items: center; gap: 15px; text-align: left;">
-                    <span style="font-size: 30px;">💎</span>
-                    <div>
-                        <div style="font-family: 'Press Start 2P'; font-size: 12px; color: #d484ff;">Legend Path</div>
-                        <div style="font-size: 1.1rem; color: #e0b0ff;">10 Sessions + Leadership Rank</div>
-                    </div>
+                <div style="font-size: 30px;">💎</div>
+                <div>
+                    <h3 style="color:#d484ff">The Legend Pack</h3>
+                    <p style="color:#e0b0ff">10 Sessions + Leadership Rank</p>
                 </div>
-                <div style="font-family: 'Press Start 2P'; font-size: 16px; color: #d484ff;">$175</div>
+                <div class="price-tag" style="color:#d484ff">₱10,000</div>
             </div>
 
             <div class="inventory-slot">
-                <div style="display: flex; align-items: center; gap: 15px; text-align: left;">
-                    <span style="font-size: 30px;">🌍</span>
-                    <div>
-                        <div style="font-family: 'Press Start 2P'; font-size: 12px;">Realm Access</div>
-                        <div style="font-size: 1.1rem; color: #ddd;">Play anytime (Graduates only)</div>
-                    </div>
+                <div style="font-size: 30px;">🌍</div>
+                <div>
+                    <h3>Master Realm Access</h3>
+                    <p>Play anytime on our private server</p>
                 </div>
-                <div style="font-family: 'Press Start 2P'; font-size: 16px;">$15/mo</div>
+                <div class="price-tag">₱750/mo</div>
             </div>
 
         </div>
     </section>
 
-    <!-- Enrollment -->
+    <!-- FORM -->
     <section id="enroll" class="footer-zone">
         <div class="panel">
-            <h2>Apply for Squad</h2>
+            <h2>Start the Adventure</h2>
             <form>
-                <label>Parent Email:</label>
-                <input type="email" placeholder="steve@alex.com" required>
+                <label>Guardian's Email:</label>
+                <input type="email" placeholder="steve@alex.com">
 
-                <label>Player Username:</label>
-                <input type="text" placeholder="Gamer123" required>
+                <label>Player's Username:</label>
+                <input type="text" placeholder="GamerTag123">
 
-                <label>Desired Pack:</label>
+                <label>Choose Path:</label>
                 <select>
-                    <option>Recruit Path (5 Sessions)</option>
-                    <option>Legend Path (10 Sessions)</option>
+                    <option>Recruit Path (₱4,000)</option>
+                    <option>Legend Path (₱10,000)</option>
                 </select>
 
-                <button type="submit" class="btn" style="width: 100%; background: var(--mc-green); margin-top: 10px;">Send Quest Invite</button>
+                <button type="submit" class="btn" style="width:100%; background:var(--mc-green); margin-top:10px;">Send Application</button>
             </form>
         </div>
-        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.6; padding: 0 20px;">
-            NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG.
-        </p>
+        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.6; text-align: center;">NOT AN OFFICIAL MINECRAFT PRODUCT.</p>
     </section>
 
 </body>
