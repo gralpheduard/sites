@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlockLeaders Academy | Mentorship</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+    <title>NEXUS | Minecraft Learning Center</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --mc-green: #52a535;
-            --mc-panel: #c6c6c6;
-            --mc-dirt: #4e342e;
-            --mc-grass: #5aa351;
+            --nexus-blue: #00d2ff;
+            --nexus-dark: #0f1115;
+            --nexus-panel: #2a2d3e;
+            --nexus-border: #000000;
+            --nexus-highlight: #454d66;
+            --accent-glow: 0 0 15px rgba(0, 210, 255, 0.4);
         }
 
-        /* Essential for "Pantay" alignment */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -22,105 +23,125 @@
         }
 
         body {
-            background-color: #1a1a1a;
+            background-color: #050505;
             color: #fff;
             font-family: 'VT323', monospace;
-            font-size: 1.4rem;
-            overflow-x: hidden;
+            font-size: 1.5rem;
             line-height: 1.2;
+            /* Subtle grid background to mimic Minecraft coordinates/blueprint */
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
         }
 
         h1, h2, h3 {
             font-family: 'Press Start 2P', cursive;
-            text-shadow: 3px 3px 0px #000;
             text-transform: uppercase;
             text-align: center;
-            width: 100%;
+            color: var(--nexus-blue);
+            text-shadow: 4px 4px 0px #000;
         }
 
         /* --- HERO --- */
         .hero {
             position: relative;
-            min-height: 100vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
-                        url('https://wallpaperaccess.com/full/111300.jpg');
+            background: linear-gradient(rgba(15,17,21,0.8), rgba(15,17,21,0.95)), 
+                        url('https://wallpaperaccess.com/full/111300.jpg'); /* Minecraft survival world */
             background-size: cover;
             background-position: center;
             padding: 40px 20px;
-            border-bottom: 10px solid var(--mc-grass);
+            border-bottom: 8px solid var(--nexus-blue);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .hero h1 { font-size: clamp(1.5rem, 8vw, 2.5rem); margin-bottom: 20px; }
-        .hero p { font-size: clamp(1.2rem, 5vw, 1.8rem); max-width: 700px; margin-bottom: 30px; }
+        .logo-img {
+            max-width: 300px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px var(--nexus-blue));
+        }
 
-        /* --- BUTTONS --- */
+        .hero h1 { font-size: clamp(1.2rem, 6vw, 2.2rem); margin-bottom: 20px; color: #fff; }
+        .hero p { font-size: clamp(1.2rem, 5vw, 1.8rem); max-width: 800px; margin-bottom: 30px; color: var(--nexus-blue); }
+
+        /* --- MINECRAFT BUTTONS (NEXUS BLUE) --- */
         .btn {
             display: inline-block;
-            background: #8b8b8b;
+            background: #3c3c3c;
             border: 4px solid #000;
-            border-top-color: #fff;
-            border-left-color: #fff;
-            border-right-color: #404040;
-            border-bottom-color: #404040;
-            padding: 15px 25px;
+            border-top-color: #707070;
+            border-left-color: #707070;
+            border-right-color: #202020;
+            border-bottom-color: #202020;
+            padding: 15px 30px;
             color: #fff;
             text-decoration: none;
             font-family: 'Press Start 2P', cursive;
             font-size: 14px;
             text-shadow: 2px 2px 0px #000;
             transition: 0.1s;
-            text-align: center;
+            cursor: pointer;
         }
-        .btn:hover { background: var(--mc-green); }
+        .btn:hover { 
+            background: var(--nexus-blue); 
+            border-top-color: #80eaff;
+            border-left-color: #80eaff;
+        }
+        .btn:active {
+            transform: translateY(2px);
+            border: 4px solid #000;
+            border-top-color: #202020;
+            border-left-color: #202020;
+        }
 
-        /* --- PANELS (The Containers) --- */
+        /* --- MC PANELS (The Dark Nexus Style) --- */
         .section {
-            padding: 60px 15px;
-            background: #333 url('https://www.transparenttextures.com/patterns/dark-matter.png');
+            padding: 80px 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         .panel {
-            background-color: var(--mc-panel);
+            background-color: var(--nexus-panel);
             border: 6px solid #000;
-            border-top-color: #fff;
-            border-left-color: #fff;
-            border-right-color: #555;
-            border-bottom-color: #555;
-            padding: 30px 15px; /* Reduced side padding for mobile */
+            border-top-color: var(--nexus-highlight);
+            border-left-color: var(--nexus-highlight);
+            border-right-color: #1a1a1a;
+            border-bottom-color: #1a1a1a;
+            padding: 40px 20px;
             width: 100%;
-            max-width: 600px; /* Centered narrow look like your screenshot */
-            color: #333;
-            box-shadow: 10px 10px 0px rgba(0,0,0,0.5);
+            max-width: 900px;
+            box-shadow: 15px 15px 0px rgba(0,0,0,0.4);
             margin-bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Centers children inside panel */
         }
 
-        .panel h2 { font-size: 1.2rem; text-shadow: none; color: #000; margin-bottom: 30px; line-height: 1.4; }
+        .panel h2 { font-size: 1.1rem; margin-bottom: 40px; color: #fff; }
 
-        /* --- CURRICULUM CARDS (Fixing the overlap) --- */
+        /* --- CURRICULUM GRID --- */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
         .card {
-            background: #d1d1d1;
-            border: 4px solid #333;
+            background: rgba(0,0,0,0.3);
+            border: 4px solid #000;
+            border-top-color: #444;
             padding: 20px;
             text-align: center;
-            width: 100%;
-            margin-bottom: 20px;
         }
-        .card:last-child { margin-bottom: 0; }
-        .card h3 { font-size: 14px; text-shadow: none; color: #111; margin: 15px 0; }
-        .card p { font-size: 1.3rem; line-height: 1.2; }
+        .card h3 { font-size: 12px; margin: 15px 0; color: var(--nexus-blue); text-shadow: none; }
+        .card p { font-size: 1.3rem; opacity: 0.9; }
 
-        /* --- INVENTORY SLOTS (Fixing the Skew) --- */
+        /* --- INVENTORY SLOTS (Pricing) --- */
         .inventory-slot {
             background: #8b8b8b;
             border: 4px solid #373737;
@@ -128,121 +149,140 @@
             margin-bottom: 15px;
             width: 100%;
             display: flex;
-            flex-direction: column;
-            align-items: center; /* Pantay center */
-            text-align: center;
+            justify-content: space-between;
+            align-items: center;
             color: #fff;
+            position: relative;
         }
 
-        .inventory-slot h3 { font-size: 14px; margin-bottom: 10px; }
-        .inventory-slot p { font-size: 1rem; color: #ddd; margin-bottom: 10px; }
-        .price-tag { font-family: 'Press Start 2P'; font-size: 1.2rem; color: #55ff55; }
-
-        .enchanted {
-            border-color: #a333ff;
-            background: #4a3a5a;
-            box-shadow: inset 0 0 15px #a333ff;
+        .inventory-slot.enchanted {
+            border-color: var(--nexus-blue);
+            background: #1a2a3a;
+            box-shadow: inset 0 0 20px rgba(0,210,255,0.4);
+            animation: enchantment-glint 3s infinite linear;
         }
 
-        /* --- FORM FIXES --- */
-        form { width: 100%; }
+        @keyframes enchantment-glint {
+            0% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(20deg) brightness(1.2); }
+            100% { filter: hue-rotate(0deg); }
+        }
+
+        .inventory-slot h3 { font-size: 12px; text-shadow: none; text-align: left; margin: 0; }
+        .inventory-slot p { font-size: 1rem; color: #ccc; margin: 0; }
+        .price-tag { font-family: 'Press Start 2P'; font-size: 1.2rem; color: #55ff55; text-shadow: 2px 2px 0 #000; }
+
+        /* --- FORM --- */
+        .form-panel {
+            background: #c6c6c6; /* Classic MC UI Gray */
+            color: #333;
+            border-top-color: #fff;
+            border-left-color: #fff;
+            border-right-color: #555;
+            border-bottom-color: #555;
+        }
+        .form-panel h2 { color: #000; text-shadow: none; margin-bottom: 25px;}
+
         label { 
             font-family: 'Press Start 2P'; 
             font-size: 10px; 
             display: block; 
             margin-bottom: 8px; 
-            color: #333; 
+            color: #444; 
         }
         input, select {
             background: #000;
             border: 4px solid #555;
             padding: 12px;
-            color: #55ff55;
+            color: var(--nexus-blue);
             font-family: 'VT323';
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             width: 100%;
             margin-bottom: 20px;
+            outline: none;
         }
-
-        .icon-pixel { width: 48px; height: 48px; margin-bottom: 10px; }
+        input:focus { border-color: var(--nexus-blue); }
 
         /* --- FOOTER --- */
-        .footer-zone {
-            background: var(--mc-dirt) url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
-            border-top: 10px solid var(--mc-grass);
-            padding: 60px 15px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .footer {
+            background: #111;
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 8px solid #222;
         }
 
-        @media (min-width: 768px) {
-            .panel { max-width: 900px; padding: 40px; }
-            .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-            .card { margin-bottom: 0; }
-            .inventory-slot { flex-direction: row; text-align: left; justify-content: space-between; }
-            .inventory-slot h3, .inventory-slot p { text-align: left; margin-bottom: 0; }
+        .nexus-cube {
+            width: 40px;
+            height: 40px;
+            background: var(--nexus-blue);
+            margin: 0 auto 15px;
+            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+        }
+
+        @media (max-width: 768px) {
+            .inventory-slot { flex-direction: column; text-align: center; gap: 10px; }
+            .inventory-slot h3 { text-align: center; }
         }
     </style>
 </head>
 <body>
 
     <section class="hero">
-        <h1>Building Legends</h1>
-        <p>A Minecraft mentorship for kids. Teaching leadership, integrity, and teamwork.</p>
-        <a href="#enroll" class="btn">Get Started</a>
+        <!-- REPLACE WITH YOUR PNG LOGO -->
+        <img src="./nexus-logo.png" alt="NEXUS" class="logo-img">
+        <h1>Building Digital Legends</h1>
+        <p>A premier Learning & Development Center using Minecraft to master Leadership, Strategy, and Teamwork.</p>
+        <a href="#enroll" class="btn">Join The Nexus</a>
     </section>
 
     <section class="section">
-        <!-- THE CURRICULUM -->
         <div class="panel">
-            <h2>The Curriculum</h2>
+            <h2>The Academy Pillars</h2>
             <div class="grid">
                 <div class="card">
-                    <div style="background:#55ffff; width:30px; height:30px; margin: 0 auto; clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);"></div>
-                    <h3>Digital Integrity</h3>
-                    <p>Honesty in every trade. Respecting boundaries. Winning the right way.</p>
+                    <div class="nexus-cube"></div>
+                    <h3>Strategic Logic</h3>
+                    <p>Advanced engineering and resource management to solve complex puzzles.</p>
                 </div>
                 <div class="card">
-                    <div style="background:#ffaa00; width:30px; height:30px; margin: 0 auto; border-radius: 5px;"></div>
-                    <h3>Leadership</h3>
-                    <p>Leading a 5-man team through survival and managing resources.</p>
+                    <div class="nexus-cube" style="background:#fff"></div>
+                    <h3>Ethical Conduct</h3>
+                    <p>Fostering digital integrity and fair play in competitive environments.</p>
                 </div>
                 <div class="card">
-                    <div style="background:#aaaaaa; width:30px; height:30px; margin: 0 auto; clip-path: polygon(0 20%, 100% 20%, 100% 80%, 0 80%);"></div>
-                    <h3>Teamwork</h3>
-                    <p>Building together. Shared goals and engineering projects.</p>
+                    <div class="nexus-cube" style="opacity:0.6"></div>
+                    <h3>Team Dynamics</h3>
+                    <p>Communication protocols for leading 5-man squads during survival raids.</p>
                 </div>
             </div>
         </div>
 
-        <!-- PRICING -->
-        <h2 style="margin: 20px 0;">Select Your Pack</h2>
+        <h2 style="margin: 40px 0 20px;">Available Ranks</h2>
         <div class="panel" style="background:transparent; border:none; box-shadow:none; padding:0;">
             
             <div class="inventory-slot">
-                <div style="font-size: 30px;">🪵</div>
-                <div>
-                    <h3>The Recruit Pack</h3>
-                    <p>5 Sessions + Squad Badge</p>
+                <div style="font-size: 35px; filter: drop-shadow(2px 2px 0 #000);">🧊</div>
+                <div style="flex-grow: 1; margin-left: 20px;">
+                    <h3>Recruit Protocol</h3>
+                    <p>5 Structured Sessions + Academy Badge</p>
                 </div>
                 <div class="price-tag">₱4,000</div>
             </div>
 
             <div class="inventory-slot enchanted">
-                <div style="font-size: 30px;">💎</div>
-                <div>
-                    <h3 style="color:#d484ff">The Legend Pack</h3>
-                    <p style="color:#e0b0ff">10 Sessions + Leadership Rank</p>
+                <div style="font-size: 35px; filter: drop-shadow(0 0 10px var(--nexus-blue));">💎</div>
+                <div style="flex-grow: 1; margin-left: 20px;">
+                    <h3 style="color:#fff">Nexus Legend Path</h3>
+                    <p style="color:var(--nexus-blue)">10 Sessions + Leadership Certification</p>
                 </div>
-                <div class="price-tag" style="color:#d484ff">₱10,000</div>
+                <div class="price-tag" style="color:#fff">₱10,000</div>
             </div>
 
             <div class="inventory-slot">
-                <div style="font-size: 30px;">🌍</div>
-                <div>
-                    <h3>Master Realm Access</h3>
-                    <p>Play anytime on our private server</p>
+                <div style="font-size: 35px; filter: drop-shadow(2px 2px 0 #000);">🌐</div>
+                <div style="flex-grow: 1; margin-left: 20px;">
+                    <h3>Master Realm Pass</h3>
+                    <p>24/7 Access to the NEXUS Private Sandbox</p>
                 </div>
                 <div class="price-tag">₱750/mo</div>
             </div>
@@ -251,27 +291,34 @@
     </section>
 
     <!-- FORM -->
-    <section id="enroll" class="footer-zone">
-        <div class="panel">
-            <h2>Start the Adventure</h2>
+    <section id="enroll" class="section" style="background: #000;">
+        <div class="panel form-panel">
+            <h2>Application Portal</h2>
             <form>
-                <label>Guardian's Email:</label>
-                <input type="email" placeholder="steve@alex.com">
+                <label>Parent/Guardian Email:</label>
+                <input type="email" placeholder="nexus@center.com">
 
-                <label>Player's Username:</label>
-                <input type="text" placeholder="GamerTag123">
+                <label>Student Name / IGN:</label>
+                <input type="text" placeholder="GamerTag_2024">
 
-                <label>Choose Path:</label>
+                <label>Select Protocol:</label>
                 <select>
-                    <option>Recruit Path (₱4,000)</option>
+                    <option>Recruit Protocol (₱4,000)</option>
                     <option>Legend Path (₱10,000)</option>
+                    <option>Realm Pass (₱750/mo)</option>
                 </select>
 
-                <button type="submit" class="btn" style="width:100%; background:var(--mc-green); margin-top:10px;">Send Application</button>
+                <button type="submit" class="btn" style="width:100%; background:var(--nexus-blue); border-top-color:#80eaff; margin-top:10px;">Initialize Training</button>
             </form>
         </div>
-        <p style="margin-top: 40px; font-size: 0.8rem; opacity: 0.6; text-align: center;">NOT AN OFFICIAL MINECRAFT PRODUCT.</p>
+        <p style="margin-top: 40px; font-size: 0.9rem; opacity: 0.5; text-align: center; font-family: 'Space Grotesk'">
+            NEXUS LDC IS NOT AN OFFICIAL MINECRAFT PRODUCT.
+        </p>
     </section>
+
+    <footer class="footer">
+        <p style="color: var(--nexus-blue); font-family: 'Press Start 2P'; font-size: 10px;">&copy; 2024 NEXUS LEARNING AND DEVELOPMENT CENTER</p>
+    </footer>
 
 </body>
 </html>
