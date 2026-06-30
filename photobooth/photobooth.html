@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Photobooth Simulator</title>
+    <style>
+        :root {
+            --primary: #ff4757;
+            --dark: #2f3542;
+            --light: #f1f2f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark);
+            color: var(--light);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        #camera-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px;
+            aspect-ratio: 4/3;
+            background: #000;
+            margin: 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        video#preview {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1); /* Mirror effect */
+        }
+
+        #overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 120px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+
+        #flash {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.1s;
+        }
+
+        .controls {
+            margin: 20px 0;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            background-color: #ff6b81;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            background-color: #747d8c;
+            cursor: not-allowed;
+        }
+
+        /* Results Page Styling */
+        #results {
+            display: none;
+            margin-top: 30px;
+            width: 100%;
+        }
+
+        .result-section {
+            margin-bottom: 50px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .photo-grid img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+
+        video#recorded-video {
+            width: 100%;
+            max-width: 640px;
+            border-radius: 12px;
+            border: 2px solid var(--light);
+        }
+
+        h2 {
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+            padding-bottom: 5px;
+            margin-bottom: 20px;
+        }
+
+        .status-bar {
+            margin-top: 10px;
+            font-style: italic;
+            color: #a4b0be;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📸 Photobooth Sim</h1>
+        
+        <div id="camera-view">
+            <div id="camera-container">
+                <video id="preview" autoplay playsinline muted></video>
+                <div id="overlay"></div>
+                <div id="flash"></div>
+            </div>
+            
+            <div class="controls">
+                <button id="start-btn">Start Session</button>
+                <div id="status" class="status-bar">Allow camera access to start</div>
+            </div>
+        </div>
+
+        <!-- Hidden Canvas for capturing -->
+        <canvas id="capture-canvas" style="display:none;"></canvas>
+
+        <!-- Final Display -->
+        <div id="results">
+            <div class="result-section">
+                <h2>Your Photo Strip</h2>
+                <div class="photo-grid" id="photo-strip">
+                    <!-- 4 Images will appear here -->
+                </div>
+            </div>
+
+            <div class="result-section">
+                <h2>Session Video</h2>
+                <video id="recorded-video" controls></video>
+                <br><br>
+                <button onclick="window.location.reload()">Take New Photos</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const video = document.getElementById('preview');
+        const startBtn = document.getElementById('start-btn');
+        const overlay = document.getElementById('overlay');
+        const flash = document.getElementById('flash');
+        const status = document.getElementById('status');
+        const canvas = document.getElementById('capture-canvas');
+        const photoStrip = document.getElementById('photo-strip');
+        const recordedVideo = document.getElementById('recorded-video');
+        const resultsArea = document.getElementById('results');
+        const cameraView = document.getElementById('camera-view');
+
+        let stream;
+        let recorder;
+        let chunks = [];
+        let photos = [];
+        const totalShots = 4;
+        const countdownTime = 5;
+
+        // Initialize Camera
+        async function initCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { width: 1280, height: 720 }, 
+                    audio: true 
+                });
+                video.srcObject = stream;
+                status.innerText = "Ready!";
+            } catch (err) {
+                console.error(err);
+                status.innerText = "Error: Camera not found or access denied.";
+                startBtn.disabled = true;
+            }
+        }
+
+        // Start Photobooth Logic
+        startBtn.addEventListener('click', async () => {
+            startBtn.disabled = true;
+            photos = [];
+            photoStrip.innerHTML = '';
+            chunks = [];
+
+            // 1. Start Recording the whole thing
+            recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = (e) => chunks.push(e.data);
+            recorder.onstop = exportVideo;
+            recorder.start();
+
+            status.innerText = "Recording Session...";
+
+            // 2. Loop for 4 shots
+            for (let i = 1; i <= totalShots; i++) {
+                await runCountdown(countdownTime, i);
+                takePhoto();
+                await sleep(1000); // Wait a second after flash
+            }
+
+            // 3. Finish up
+            recorder.stop();
+            status.innerText = "Processing...";
+            
+            setTimeout(() => {
+                cameraView.style.display = 'none';
+                resultsArea.style.display = 'block';
+                window.scrollTo(0,0);
+            }, 1000);
+        });
+
+        async function runCountdown(seconds, shotNumber) {
+            return new Promise((resolve) => {
+                let count = seconds;
+                const interval = setInterval(() => {
+                    overlay.innerText = count;
+                    if (count === 0) {
+                        clearInterval(interval);
+                        overlay.innerText = "";
+                        resolve();
+                    }
+                    count--;
+                }, 1000);
+            });
+        }
+
+        function takePhoto() {
+            // Flash effect
+            flash.style.opacity = '1';
+            setTimeout(() => flash.style.opacity = '0', 100);
+
+            // Draw to canvas
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            
+            // Mirror image for the canvas capture
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const dataUrl = canvas.toDataURL('image/jpeg');
+            photos.push(dataUrl);
+
+            // Add to display grid immediately
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            photoStrip.appendChild(img);
+        }
+
+        function exportVideo() {
+            const blob = new Blob(chunks, { type: 'video/webm' });
+            const videoURL = URL.createObjectURL(blob);
+            recordedVideo.src = videoURL;
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Initialize on load
+        initCamera();
+    </script>
+</body>
+</html>
